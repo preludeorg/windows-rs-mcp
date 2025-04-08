@@ -39,7 +39,7 @@ jobs:
       run: |
         WHEEL_FILE=$(ls dist/*.whl)
         echo "Testing wheel: $WHEEL_FILE"
-        uv run --with "pkg @ $WHEEL_FILE" --no-project -- python -c "import windows_rs_mcp"
+        uv run --with $WHEEL_FILE --no-project -- python -c "import windows_rs_mcp"
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4

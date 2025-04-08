@@ -1,0 +1,74 @@
+name: Build and Publish Package
+
+# Trigger only on tag pushes matching v*.*.* (e.g., v1.0.0, v2.3.4)
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+# Add permissions for PyPI trusted publishing
+permissions:
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # Use Python 3.13 as requested
+        python-version: ["3.13"]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up uv and Python ${{ matrix.python-version }}
+      uses: astral-sh/setup-uv@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+        enable-cache: true
+        cache-dependency-glob: |
+          **/pyproject.toml
+          **/uv.lock
+
+    - name: Build package
+      run: uv build --no-sources
+
+    - name: Test package installation and import
+      run: |
+        WHEEL_FILE=$(ls dist/*.whl)
+        echo "Testing wheel: $WHEEL_FILE"
+        uv run --with "pkg @ $WHEEL_FILE" --no-project -- python -c "import windows_rs_mcp"
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: python-package-${{ matrix.python-version }}
+        path: dist/
+
+  publish:
+    # Run after the build job completes successfully
+    needs: build
+    runs-on: ubuntu-latest
+    # Environment configuration for trusted publishing (optional but good practice)
+    environment:
+      name: pypi
+      url: https://pypi.org/p/windows-rs-mcp # Replace 'windows-rs-mcp' if your PyPI package name is different
+    steps:
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        # Match the artifact name from the build job
+        name: python-package-3.13 # Assuming only python 3.13 is used now
+        # Download to a directory named 'dist'
+        path: dist
+
+    - name: Set up uv
+      # Need uv again to publish
+      uses: astral-sh/setup-uv@v5
+      # No need to specify python-version here if not installing/using python directly
+
+    - name: Publish package to PyPI
+      # uv publish automatically uses trusted publishing in GitHub Actions
+      # if id-token: write permission is set
+      run: uv publish dist/* 

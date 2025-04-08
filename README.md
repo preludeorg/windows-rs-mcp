@@ -78,6 +78,21 @@ Make sure to replace the placeholder path in `args` with the actual absolute pat
 
 After configuring, restart Claude Desktop. You should then be able to use the `search_windows_api` tool.
 
+### Configuring Cursor
+
+Open `.cursor/mcp.json` and add the MCP server
+
+```json
+{
+  "mcpServers": {
+    "windows-rs-mcp": {
+      "command": "uvx",
+      "args": ["windows-rs-mcp"]
+    }
+  }
+}
+```
+
 ## Environment Variables
 
 *   `MCP_SKIP_PLAYWRIGHT_INSTALL`: Set to `true`, `1`, or `yes` to skip the automatic Playwright browser installation check.

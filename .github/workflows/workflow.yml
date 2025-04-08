@@ -6,8 +6,9 @@ on:
     tags:
       - 'v*.*.*'
 
-# Add permissions for PyPI trusted publishing
+# Add permissions for PyPI trusted publishing and repository checkout
 permissions:
+  contents: read # Add read permission for checkout
   id-token: write
 
 jobs:

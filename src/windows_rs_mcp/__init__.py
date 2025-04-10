@@ -1,9 +1,8 @@
 import os
 import subprocess
 import sys
-import typing
 
-from mcp.server.fastmcp import Context, FastMCP
+from mcp.server.fastmcp import FastMCP
 
 from windows_rs_mcp.docs import (
     ApiDocumentation,
@@ -28,7 +27,7 @@ mcp = FastMCP(
 
 
 @mcp.tool()
-async def search_windows_api(query: str, ctx: Context[typing.Any, typing.Any]) -> SearchResult:
+async def search_windows_api(query: str) -> SearchResult:
     """Search the Rust Windows crate API documentation (https://microsoft.github.io/windows-docs-rs/).
 
     An example query is "CreateFile", "VirtualAlloc", "FILE_DISPOSITION_INFORMATION".

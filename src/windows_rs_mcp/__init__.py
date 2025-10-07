@@ -12,18 +12,7 @@ from windows_rs_mcp.docs import (
 )
 
 # Create the MCP server instance
-mcp = FastMCP(
-    "Windows Crate Docs Search",
-    description="Provides tools to search the Rust Windows crate API documentation.",
-    # Add dependencies required by the docs module
-    dependencies=["playwright"],
-    # Define return types for better schema generation
-    response_models={
-        "search_windows_api": SearchResult,
-        "ApiDocumentation": ApiDocumentation,
-        "RelatedApiFunction": RelatedApiFunction,
-    },
-)
+mcp = FastMCP("Windows Crate Docs Search")
 
 
 @mcp.tool()

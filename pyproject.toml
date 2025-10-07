@@ -1,10 +1,11 @@
 [project]
 name = "windows-rs-mcp"
-version = "0.1.0"
+version = "0.3.0"
 description = "Add your description here"
 readme = "README.md"
 authors = [
-    { name = "Max Harley", email = "t94j0@users.noreply.github.com" }
+    { name = "Max Harley", email = "t94j0@users.noreply.github.com" },
+    { name = "Matt Hand", email = "matterpreter@users.noreply.github.com" }
 ]
 requires-python = ">=3.12"
 dependencies = [

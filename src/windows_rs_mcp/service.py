@@ -76,9 +76,7 @@ class SearchService:
         self._search_index = search_index
         self._scraper = DocsScraper(config)
 
-    async def search_api(
-        self, search_term: str, max_related: int = 5
-    ) -> SearchResult:
+    async def search_api(self, search_term: str, max_related: int = 5) -> SearchResult:
         """Search the Windows API documentation.
 
         Args:
@@ -122,7 +120,10 @@ class SearchService:
                 )
 
                 # Check for exact name match (first result is usually exact match)
-                if exact_match_result is None and result_item["name"].lower() == search_term.lower():
+                if (
+                    exact_match_result is None
+                    and result_item["name"].lower() == search_term.lower()
+                ):
                     exact_match_result = result_item
 
             # Get exact match documentation if found
@@ -181,12 +182,16 @@ class SearchService:
                 url = self._scraper.full_path_to_doc_url(full_path, item_type)
                 # Try a quick HEAD request to see if the page exists
                 async with self._browser_manager.get_docs_page() as page:
-                    response = await page.goto(url, timeout=5000, wait_until="domcontentloaded")
+                    response = await page.goto(
+                        url, timeout=5000, wait_until="domcontentloaded"
+                    )
                     if response and response.status == 200:
                         # Check if it's actually a valid docs page
                         has_content = await page.locator("#main-content").count() > 0
                         if has_content:
-                            logger.info(f"Determined type '{item_type}' for {full_path}")
+                            logger.info(
+                                f"Determined type '{item_type}' for {full_path}"
+                            )
                             return item_type
             except Exception:
                 continue
@@ -269,7 +274,9 @@ class SearchService:
 
         async with self._browser_manager.get_docs_page() as page:
             response = await page.goto(
-                url, wait_until="domcontentloaded", timeout=self._config.page_load_timeout
+                url,
+                wait_until="domcontentloaded",
+                timeout=self._config.page_load_timeout,
             )
 
             if not response or response.status != 200:
@@ -280,7 +287,9 @@ class SearchService:
             # Verify page loaded correctly
             has_content = await page.locator("#main-content").count() > 0
             if not has_content:
-                raise DocumentationNotFoundError("Page loaded but #main-content not found")
+                raise DocumentationNotFoundError(
+                    "Page loaded but #main-content not found"
+                )
 
             # Extract content
             doc_page = await self._scraper._extract_doc_content(page)

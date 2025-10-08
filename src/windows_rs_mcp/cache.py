@@ -99,9 +99,7 @@ class AsyncCache[T]:
 
         async with self._lock:
             expired_keys = [
-                key
-                for key, entry in self._cache.items()
-                if entry.is_expired(self._ttl)
+                key for key, entry in self._cache.items() if entry.is_expired(self._ttl)
             ]
             for key in expired_keys:
                 del self._cache[key]

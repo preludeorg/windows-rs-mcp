@@ -166,11 +166,15 @@ class SearchIndexClient:
                 parent_id = parent_idx[idx]
                 # parent_id can be int or string, convert to int
                 try:
-                    parent_id_int = int(parent_id) if isinstance(parent_id, str) else parent_id
+                    parent_id_int = (
+                        int(parent_id) if isinstance(parent_id, str) else parent_id
+                    )
                     if 0 <= parent_id_int < len(paths):
                         path_parts = paths[parent_id_int]
                         if isinstance(path_parts, list):
-                            parent_path = "windows::" + "::".join(str(p) for p in path_parts)
+                            parent_path = "windows::" + "::".join(
+                                str(p) for p in path_parts
+                            )
                         elif isinstance(path_parts, str):
                             parent_path = f"windows::{path_parts}"
                 except (ValueError, TypeError):

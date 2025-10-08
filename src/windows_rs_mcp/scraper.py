@@ -62,7 +62,6 @@ class DocsScraper:
         """
         self._config = config
 
-
     async def get_doc_page_content(self, page: Page, api_path: str) -> DocPage:
         """Get documentation page content for an API item.
 
@@ -331,12 +330,14 @@ class DocsScraper:
                     # We'll need to determine this from the docs page later
                     item_type = "unknown"
 
-                    results.append({
-                        "name": name,
-                        "full_path": f"windows::{full_path}",
-                        "feature": feature,
-                        "type": item_type,
-                    })
+                    results.append(
+                        {
+                            "name": name,
+                            "full_path": f"windows::{full_path}",
+                            "feature": feature,
+                            "type": item_type,
+                        }
+                    )
 
             return results
 

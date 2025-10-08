@@ -36,7 +36,12 @@ async def lifespan(server) -> AsyncIterator[None]:
     This manages the browser instance lifecycle, ensuring the browser
     is created once at startup and properly cleaned up at shutdown.
     """
-    global _browser_manager, _search_service, _cache_manager, _search_index_client, _cleanup_task
+    global \
+        _browser_manager, \
+        _search_service, \
+        _cache_manager, \
+        _search_index_client, \
+        _cleanup_task
 
     # Load configuration
     config = Config.from_env()

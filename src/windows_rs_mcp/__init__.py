@@ -117,7 +117,6 @@ async def _periodic_cache_cleanup() -> None:
 # Create the MCP server instance with lifespan
 mcp = FastMCP("Windows Crate Docs Search", lifespan=lifespan)
 
-
 @mcp.tool()
 async def search_windows_api(query: str) -> SearchResult:
     """Search the Rust Windows crate API documentation (https://microsoft.github.io/windows-docs-rs/).
